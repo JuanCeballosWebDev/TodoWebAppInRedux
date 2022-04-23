@@ -6,7 +6,7 @@ const initialState = {
         {
             id: uuidv4(),
             text: 'Use Redux',
-            completed: true
+            completed: false
         }
     ],
 }
@@ -23,17 +23,29 @@ const initialState = {
                 completed: false
             }];
             return {
-                ...state,
                 todos: todoList
             };
         }   
         case types.TOGGLE_TODO: {
-          // ...
+          const newTodos = [...state.todos];
+          const index = newTodos.findIndex((todo) => todo.id === action.payload);
+          newTodos[index].completed = !newTodos[index].completed;
+        
+          return {
+            todos: newTodos
+          };
         
         }
         case types.DELETE_TODO: {
          
-          // ...
+            const temporaryTodos = [];
+            state.todos.forEach((todo) => {
+              if (todo.id !== action.payload) temporaryTodos.push(todo);
+            });
+            
+            return {
+                todos: temporaryTodos
+              };
          
         }    
         default: {
